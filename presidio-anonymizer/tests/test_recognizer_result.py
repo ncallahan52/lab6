@@ -284,6 +284,21 @@ def test_given_negative_start_or_endpoint_then_we_fail(start, end):
     ):
         create_recognizer_result("entity", 0, start, end)
 
+@pytest.mark.parametrize(
+    "a_start,a_end,b_start,b_end,expected",
+    [
+        (0, 10, 5, 12, 5),
+        (0, 4, 5, 9, 0),
+        (6, 9, 0, 4, 0),
+    ],
+)
+def test_intersects(a_start, a_end, b_start, b_end, expected):
+    first = create_recognizer_result("entity", 0.0, a_start, a_end)
+    second = create_recognizer_result("entity", 0.0, b_start, b_end)
+
+    # assertions (and symmetry)
+    assert first.intersects(second) == expected
+    assert second.intersects(first) == expected
 
 def create_recognizer_result(entity_type: str, score: float, start: int, end: int):
     data = {"entity_type": entity_type, "score": score, "start": start, "end": end}
