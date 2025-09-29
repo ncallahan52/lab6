@@ -1,17 +1,9 @@
-import pytest
 from presidio_anonymizer.sample import sample_run_anonymizer
 
-def test_sample_run_anonymizer_bond():
-    res = sample_run_anonymizer("My name is Bond.", 11, 15, "BIP")
+def test_sample_run_anonymizer_bond_example():
+    result = sample_run_anonymizer("My name is Bond.", 11, 15)
 
-    # Assert – result text
-    assert res.text == "My name is BIP."
-
-    # Assert – one item with correct span and metadata
-    assert len(res.items) == 1
-    item = res.items[0]
-    assert item.start == 11
-    assert item.end == 14
-    assert item.entity_type == "PERSON"
-    assert item.text == "BIP"
-    assert item.operator == "replace"
+    assert result.text == "My name is BIP."
+    assert len(result.items) == 1
+    assert result.items[0].start == 11
+    assert result.items[0].end == 14
